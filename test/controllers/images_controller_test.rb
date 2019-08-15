@@ -52,4 +52,17 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
       assert_equal images[2].attr('src'), image1.url
     end
   end
+
+  def test_new__tag_list_input_field
+    get new_image_path
+
+    assert_response :ok
+    assert_select 'input[name="image[tag_list]"]'
+  end
+
+  def test_create__add_tag_to_db
+    post images_path, params: { image: { url: 'http://example.com', tag_list: 'example' } }
+
+    assert_equal ['example'], Image.last.tag_list
+  end
 end
