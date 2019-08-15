@@ -32,4 +32,24 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
     assert_select 'input[name="image[url]"]'
   end
+
+  test 'index_title_and_link' do
+    get root_url
+    assert_response :ok
+    assert_select 'h1', 'Welcome to your empty house!'
+    assert_select 'a[href="/images/new"]'
+  end
+
+  test 'check desc order' do
+    image1 = Image.create!(url: 'http://example.com/1')
+    image2 = Image.create!(url: 'http://example.com/2')
+    image3 = Image.create!(url: 'http://example.com/3')
+
+    get root_url
+    assert_select 'img' do |images|
+      assert_equal images[0].attr('src'), image3.url
+      assert_equal images[1].attr('src'), image2.url
+      assert_equal images[2].attr('src'), image1.url
+    end
+  end
 end
