@@ -1,0 +1,10 @@
+<h1>Welcome to your empty house!</h1>
+<%= link_to "New Image", new_image_path %>
+
+<table>
+  <% @images.each do |image| %>
+    <tr>
+      <td><%= image_tag image.url, :class => 'image' %></td>
+    </tr>
+  <% end %>
+</table>
