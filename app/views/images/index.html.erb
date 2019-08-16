@@ -1,6 +1,16 @@
 <h1>Welcome to your empty house!</h1>
 <%= link_to "New Image", new_image_path %>
 
+<div>
+  <% @tags.each do |tag| %>
+    <% if @selected.include?(tag) %>
+      <%= link_to tag, images_path(tag: @selected.sub(tag+';', '')), class: 'btn btn-primary' %>
+    <% else %>
+      <%= link_to tag, images_path(tag: @selected + tag+';'), class: 'btn btn-secondary' %>
+    <% end %>
+  <% end %>
+</div>
+
 <table>
   <% @images.each do |image| %>
     <tr>
