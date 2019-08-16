@@ -1,6 +1,13 @@
 class ImagesController < ApplicationController
   def index
-    @images = Image.order(created_at: :desc)
+    @tags = Image.tag_counts.map(&:name)
+    if params[:tag].present?
+      @selected = params[:tag]
+      @images = Image.order(created_at: :desc).tagged_with(@selected.split(';'), any: true)
+    else
+      @selected = ''
+      @images = Image.order(created_at: :desc)
+    end
   end
 
   def new

@@ -1,5 +1,6 @@
 require 'test_helper'
 
+# rubocop:disable Metrics/ClassLength
 class ImagesControllerTest < ActionDispatch::IntegrationTest
   test 'new' do
     get new_image_path
@@ -89,4 +90,65 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
       assert_includes tags[1].to_s, 'example1'
     end
   end
+
+  def test_index__all_tag_btn_exist
+    Image.create!(url: 'http://example.com', tag_list: 'tag1')
+    Image.create!(url: 'http://example.com', tag_list: %w[tag1 tag2])
+
+    get images_path
+
+    assert_response :ok
+    assert_select  'a.btn' do |btns|
+      assert_equal btns.map(&:text), %w[tag1 tag2]
+    end
+  end
+
+  def test_index__tag_class_change_on_selection
+    Image.create!(url: 'http://example.com/1', tag_list: 'tag')
+
+    get images_path
+
+    assert_response :ok
+    assert_select 'a[class="btn btn-secondary"]'
+
+    get images_path(tag: 'tag;')
+
+    assert_response :ok
+    assert_select 'a[class="btn btn-primary"]'
+  end
+
+  def test_index__images_no_filtering
+    Image.create!(url: 'http://example.com/1', tag_list: 'tag')
+    Image.create!(url: 'http://example.com/2')
+
+    get images_path
+
+    assert_response :ok
+    assert_select 'img' do |images|
+      assert_equal images[0].attr('src'), 'http://example.com/2'
+      assert_equal images[1].attr('src'), 'http://example.com/1'
+    end
+  end
+
+  def test_index__images_filtered
+    Image.create!(url: 'http://example.com/1', tag_list: '1')
+    Image.create!(url: 'http://example.com/2', tag_list: '2')
+    Image.create!(url: 'http://example.com')
+
+    get images_path(tag: '1;')
+
+    assert_response :ok
+    assert_select 'img' do |images|
+      assert_equal images[0].attr('src'), 'http://example.com/1'
+    end
+
+    get images_path(tag: '1;2;')
+
+    assert_response :ok
+    assert_select 'img' do |images|
+      assert_equal images[0].attr('src'), 'http://example.com/2'
+      assert_equal images[1].attr('src'), 'http://example.com/1'
+    end
+  end
 end
+# rubocop:enable Metrics/ClassLength
