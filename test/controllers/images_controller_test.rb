@@ -42,7 +42,7 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     get images_path
 
     assert_response :ok
-    assert_select  'a.btn' do |btns|
+    assert_select  'a.tag' do |btns|
       assert_equal btns.map(&:text), %w[tag1 tag2]
     end
   end
@@ -53,12 +53,12 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     get images_path
 
     assert_response :ok
-    assert_select 'a[class="btn btn-secondary"]'
+    assert_select 'a[class="btn btn-secondary tag"]'
 
     get images_path(tag: 'tag;')
 
     assert_response :ok
-    assert_select 'a[class="btn btn-primary"]'
+    assert_select 'a[class="btn btn-primary tag"]'
   end
 
   def test_index__images_no_filtering

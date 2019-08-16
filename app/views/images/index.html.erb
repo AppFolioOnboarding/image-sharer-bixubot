@@ -4,9 +4,9 @@
 <div>
   <% @tags.each do |tag| %>
     <% if @selected.include?(tag) %>
-      <%= link_to tag, images_path(tag: @selected.sub(tag+';', '')), class: 'btn btn-primary' %>
+      <%= link_to tag, images_path(tag: @selected.sub(tag+';', '')), class: 'btn btn-primary tag' %>
     <% else %>
-      <%= link_to tag, images_path(tag: @selected + tag+';'), class: 'btn btn-secondary' %>
+      <%= link_to tag, images_path(tag: @selected + tag+';'), class: 'btn btn-secondary tag' %>
     <% end %>
   <% end %>
 </div>
