@@ -14,7 +14,12 @@
 <table>
   <% @images.each do |image| %>
     <tr>
-      <td><%= image_tag image.url, :class => 'image' %><%= image.tag_list %></td>
+      <td>
+        <%= image_tag image.url, :class => 'image' %>
+        <%= image.tag_list %>
+        <%= link_to 'Delete', image_path(image), method: :delete, class: 'btn btn-danger',
+                    data: { confirm: "Are you sure to delete this image?" } %>
+      </td>
     </tr>
   <% end %>
 </table>

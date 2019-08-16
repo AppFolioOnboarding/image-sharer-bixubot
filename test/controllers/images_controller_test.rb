@@ -95,6 +95,22 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  def test_destroy
+    image = Image.create!(url: 'http://example.com')
+
+    assert_difference 'Image.count', -1 do
+      delete image_path(image)
+    end
+    assert_redirected_to images_path
+  end
+
+  def test_destroy__id_not_present
+    assert_no_difference 'Image.count' do
+      delete image_path('not_an_id')
+    end
+    assert_redirected_to images_path
+  end
+
   def test_new__input_field_for_url
     get new_image_path
     assert_response :ok
