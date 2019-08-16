@@ -4,9 +4,9 @@
 <div>
   <% @tags.each do |tag| %>
     <% if @selected.include?(tag) %>
-      <%= link_to tag, images_path(tag: @selected.sub(tag+';', '')), class: 'btn btn-primary' %>
+      <%= link_to tag, images_path(tag: @selected.sub(tag+';', '')), class: 'btn btn-primary tag' %>
     <% else %>
-      <%= link_to tag, images_path(tag: @selected + tag+';'), class: 'btn btn-secondary' %>
+      <%= link_to tag, images_path(tag: @selected + tag+';'), class: 'btn btn-secondary tag' %>
     <% end %>
   <% end %>
 </div>
@@ -14,7 +14,12 @@
 <table>
   <% @images.each do |image| %>
     <tr>
-      <td><%= image_tag image.url, :class => 'image' %><%= image.tag_list %></td>
+      <td>
+        <%= image_tag image.url, :class => 'image' %>
+        <%= image.tag_list %>
+        <%= link_to 'Delete', image_path(image), method: :delete, class: 'btn btn-danger',
+                    data: { confirm: "Are you sure to delete this image?" } %>
+      </td>
     </tr>
   <% end %>
 </table>

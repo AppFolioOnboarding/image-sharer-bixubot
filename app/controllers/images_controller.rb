@@ -10,6 +10,12 @@ class ImagesController < ApplicationController
     end
   end
 
+  def destroy
+    image = Image.find_by(id: params[:id])
+    image.destroy if image.present?
+    redirect_to images_path
+  end
+
   def new
     @image = Image.new
   end
