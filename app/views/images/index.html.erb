@@ -4,7 +4,7 @@
 <table>
   <% @images.each do |image| %>
     <tr>
-      <td><%= image_tag image.url, :class => 'image' %></td>
+      <td><%= image_tag image.url, :class => 'image' %><%= image.tag_list %></td>
     </tr>
   <% end %>
 </table>
