@@ -1,7 +1,13 @@
 module Api
   class FeedbacksController < ApplicationController
     def create
-      # Implement your create action
+      @fb = Feedback.new(name: params[:name], comment: params[:comments])
+
+      if @fb.save
+        render status: :ok, json: {}
+      else
+        render status: :unprocessable_entity, json: {}
+      end
     end
   end
 end
